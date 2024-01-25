@@ -1,11 +1,15 @@
 
 const express = require('express');
-const { newUser } = require('./controllers/user');
+const { newUser, login } = require('./controllers/user');
+const checkLogin = require('./middleware/checkLogin');
 const routes = express()
 
-routes.get('/login', (req, res) => { })
+routes.post('/login', login)
 routes.post('/user', newUser)
-routes.get('/clients/?:id', (req, res) => { })
-routes.post('/client/:id', (req, res) => { })
-routes.put('/client/:id', (req, res) => { })
+
+routes.use(checkLogin);
+
+// routes.get('/clients/?:id', (req, res) => { })
+// routes.post('/client/:id', (req, res) => { })
+// routes.put('/client/:id', (req, res) => { })
 module.exports = routes;
