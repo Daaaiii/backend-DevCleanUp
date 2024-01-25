@@ -11,10 +11,19 @@ const newClient = async (req, res)=>{
       "select * from clients where email = $1",
       [email]
     );
+    const phoneExists = await pool.query(
+      "select * from clients where telephone = $1",
+      [telephone]
+    );
 
     if (emailExists.rowCount > 0) {
       return res.status(400).json({
-        mensagem: "Já existe usuário cadastrado com o e-mail informado",
+        mensagem: "Já existe cliente cadastrado com o e-mail informado",
+      });
+    }
+    if (phoneExists.rowCount > 0) {
+      return res.status(400).json({
+        mensagem: "Já existe cliente cadastrado com esse telefone informado",
       });
     }
  
