@@ -13,7 +13,7 @@ create table clients(
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(150),
+    telephone VARCHAR(20) UNIQUE NOT NULL,
     createdAt DATE,
     updatedAt DATE,
 )
