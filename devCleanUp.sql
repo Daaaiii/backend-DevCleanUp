@@ -17,3 +17,6 @@ create table clients(
     createdAt TIMESTAMP,
     updatedAt TIMESTAMP,
 )
+ALTER TABLE clients
+ADD COLUMN coord_x INT,
+ADD COLUMN coord_y INT;
