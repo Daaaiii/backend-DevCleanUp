@@ -20,16 +20,17 @@ const newUser = async (req, res)=>{
       });
     }
     const encriptedPassword = await bcrypt.hash(password, 10);
-
+    const createdAt = new Date();
     const query =
-      "insert into users (name, email, password) values ($1, $2, $3) returning *";
-    const body = [name, email, encriptedPassword];
+      "insert into users (name, email, password,createdAt) values ($1, $2, $3, $4) returning *";
+    const body = [name, email, encriptedPassword, createdAt];
     const {rows} = await pool.query(query, body);
 
     const {password: _, ...user} = rows[0];
 
     return res.status(201).json(user);
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({mensagem: "Erro interno do servidor"});
   }
 }
