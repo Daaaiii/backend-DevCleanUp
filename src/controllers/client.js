@@ -109,6 +109,24 @@ const updateClient = async (req, res) => {
 		return res.status(500).json({ mensagem: "Erro interno do servidor" });
 	}
 };
+const deleteClient = async (req, res)=>{
+	const { id } = req.params;
+	if (!id) {
+		return res.status(400).json({
+			mensagem: "Id não encontrado",
+		});
+	}
+	try{
+		const query = "delete from clients where id = $1"
+		
+		 await pool.query(query, [id]);		
+
+		return res.status(200).json({mensagem: "Cliente excluído com sucesso"});
+	}catch(error){
+		console.log(error.message);
+		return res.status(500).json({ mensagem: "Erro interno do servidor" });
+	}
+}
 
 const getDistance = async (req, res) => {
 	const x1 = 0;
@@ -122,16 +140,17 @@ const getDistance = async (req, res) => {
 		const distancias = rows.map((cliente) => {
 			const x2 = cliente.coord_x;
 			const y2 = cliente.coord_y;
-			console.log(x2, y2);
 			const distancia = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
 			return {
-				cliente: cliente.name,
-				distancia: distancia.toFixed(2),
+				id: cliente.id,
+				name: cliente.name,
+				distance: distancia.toFixed(2),
 			};
 		});
+		const orderedDistances = distancias.sort((a, b) => a.distance - b.distance);
 
-		res.json(distancias);
+		res.json(orderedDistances);
 	} catch (error) {
 		console.error(error.message);
 		res.status(500).send("Erro interno do servidor");
@@ -143,4 +162,5 @@ module.exports = {
 	getClientById,
 	updateClient,
 	getDistance,
+	deleteClient
 };
