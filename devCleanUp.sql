@@ -12,8 +12,8 @@ CREATE TABLE users(
 create table clients(
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
-    email VARCHAR(100) UNIQUE NOT NULL,
-    telephone VARCHAR(20) UNIQUE NOT NULL,
+    email VARCHAR(100) ,
+    telephone VARCHAR(20),
     createdAt TIMESTAMP,
     updatedAt TIMESTAMP,
 )
