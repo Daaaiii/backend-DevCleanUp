@@ -5,8 +5,8 @@ CREATE TABLE users(
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(150),
-    createdAt DATE,
-    updatedAt DATE,
+    createdAt TIMESTAMP,
+    updatedAt TIMESTAMP,
 );
 
 create table clients(
@@ -14,6 +14,6 @@ create table clients(
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE NOT NULL,
     telephone VARCHAR(20) UNIQUE NOT NULL,
-    createdAt DATE,
-    updatedAt DATE,
+    createdAt TIMESTAMP,
+    updatedAt TIMESTAMP,
 )
