@@ -1,9 +1,8 @@
-const { error } = require("console");
 const pool = require("../conexaodb");
 
 const newClient = async (req, res) => {
-	const { name, email, telephone } = req.body;
-	if (!name || !email || !telephone) {
+	const { name, email, telephone, coord_x, coord_y } = req.body;
+	if ((!name || !email || !telephone, coord_x, coord_y)) {
 		return res
 			.status(400)
 			.json({ mensagem: "Todos os campos são obrigatórios" });
@@ -32,8 +31,8 @@ const newClient = async (req, res) => {
 		const createdAt = new Date();
 
 		const query =
-			"insert into clients (name, email, telephone, createdAt) values ($1, $2, $3, $4) returning *";
-		const body = [name, email, telephone, createdAt];
+			"insert into clients (name, email, telephone, createdAt, coord_x, coord_y) values ($1, $2, $3, $4, $5, $6) returning *";
+		const body = [name, email, telephone, createdAt, coord_x, coord_y];
 		const { rows } = await pool.query(query, body);
 
 		const { ...user } = rows[0];
@@ -79,7 +78,7 @@ const getClientById = async (req, res) => {
 
 const updateClient = async (req, res) => {
 	const { id } = req.params;
-	const { name, email, telephone } = req.body;
+	const { name, email, telephone, coord_x, coord_y } = req.body;
 
 	if (!id) {
 		return res.status(400).json({
@@ -93,30 +92,13 @@ const updateClient = async (req, res) => {
 			.json({ mensagem: "Todos os campos são obrigatórios" });
 	}
 
-	try {
-		const emailExists = await pool.query(
-			"select * from clients where email = $1",
-			[email]
-		);
-		if (emailExists.rowCount > 0 && emailExists.rows[0].id !== req.usuario.id) {
-			return res.status(400).json({
-				mensagem: "Já existe usuário cadastrado com o e-mail informado",
-			});
-		}
-		const phoneExists = await pool.query(
-			"select * from clients where telephone = $1",
-			[telephone]
-		);
-		if (phoneExists.rowCount > 0 && phoneExists.rows[0].id !== req.usuario.id) {
-			return res.status(400).json({
-				mensagem: "Já existe usuário cadastrado com o e-mail informado",
-			});
-		}
+	try {	
+		
 		const updatedAt = new Date();
 
 		const query =
-			"insert into clients (name, email, telephone, updatedAt) values ($1, $2, $3, $4) returning *";
-		const body = [name, email, telephone, updatedAt];
+			"update clients set name = $2, email = $3, telephone = $4, updatedAt = $5, coord_x = $6, coord_y = $7 where id=$1 returning *";
+		const body = [id,name, email, telephone, updatedAt, parseInt(coord_x), parseInt(coord_y)];
 		const { rows } = await pool.query(query, body);
 
 		const { ...user } = rows[0];
