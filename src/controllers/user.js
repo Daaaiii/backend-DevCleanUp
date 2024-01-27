@@ -30,7 +30,7 @@ const newUser = async (req, res)=>{
 
     return res.status(201).json(user);
   } catch (error) {
-    console.error(error.message)
+
     return res.status(500).json({mensagem: "Erro interno do servidor"});
   }
 }
@@ -62,7 +62,6 @@ const login = async (req, res)=>{
       token,
     });
   } catch (error) {
-    console.error(error.message)
     return res.status(500).json({mensagem: "Erro interno do servidor"});
   }
 }

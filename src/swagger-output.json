@@ -103,6 +103,12 @@
                 },
                 "telephone": {
                   "example": "any"
+                },
+                "coord_x": {
+                  "example": "any"
+                },
+                "coord_y": {
+                  "example": "any"
                 }
               }
             }
@@ -146,6 +152,36 @@
       }
     },
     "/client/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
       "get": {
         "description": "",
         "parameters": [
@@ -203,6 +239,12 @@
                   "example": "any"
                 },
                 "telephone": {
+                  "example": "any"
+                },
+                "coord_x": {
+                  "example": "any"
+                },
+                "coord_y": {
                   "example": "any"
                 }
               }

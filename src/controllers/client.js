@@ -2,7 +2,8 @@ const pool = require("../conexaodb");
 
 const newClient = async (req, res) => {
 	const { name, email, telephone, coord_x, coord_y } = req.body;
-	if ((!name || !email || !telephone, coord_x, coord_y)) {
+	
+	if ((!name || !email || !telephone, !coord_x, !coord_y)) {
 		return res
 			.status(400)
 			.json({ mensagem: "Todos os campos são obrigatórios" });
@@ -32,14 +33,14 @@ const newClient = async (req, res) => {
 
 		const query =
 			"insert into clients (name, email, telephone, createdAt, coord_x, coord_y) values ($1, $2, $3, $4, $5, $6) returning *";
-		const body = [name, email, telephone, createdAt, coord_x, coord_y];
+		const body = [name, email, telephone, createdAt, parseInt(coord_x), parseInt(coord_y)];
 		const { rows } = await pool.query(query, body);
 
 		const { ...user } = rows[0];
 
 		return res.status(201).json(user);
 	} catch (error) {
-		console.log(error.message);
+		
 		return res.status(500).json({ mensagem: "Erro interno do servidor" });
 	}
 };
@@ -49,7 +50,7 @@ const getClients = async (req, res) => {
 
 		return res.json(rows);
 	} catch (error) {
-		console.error(error.message);
+	
 		return res.status(500).json({ mensagem: "Erro interno do servidor" });
 	}
 };
@@ -71,7 +72,6 @@ const getClientById = async (req, res) => {
 			return res.json(rows[0]);
 		}
 	} catch (error) {
-		console.error(error.message);
 		return res.status(500).json({ mensagem: "Erro interno do servidor" });
 	}
 };
@@ -105,7 +105,6 @@ const updateClient = async (req, res) => {
 
 		return res.status(201).json(user);
 	} catch (error) {
-		console.log(error.message);
 		return res.status(500).json({ mensagem: "Erro interno do servidor" });
 	}
 };
@@ -123,7 +122,6 @@ const deleteClient = async (req, res)=>{
 
 		return res.status(200).json({mensagem: "Cliente excluído com sucesso"});
 	}catch(error){
-		console.log(error.message);
 		return res.status(500).json({ mensagem: "Erro interno do servidor" });
 	}
 }
@@ -152,7 +150,7 @@ const getDistance = async (req, res) => {
 
 		res.json(orderedDistances);
 	} catch (error) {
-		console.error(error.message);
+
 		res.status(500).send("Erro interno do servidor");
 	}
 };
